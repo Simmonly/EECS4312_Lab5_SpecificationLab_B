@@ -1,5 +1,5 @@
-## Student Name:
-## Student ID: 
+## Student Name: Mohsen Maoodhah
+## Student ID: 220153425
 
 """
 Public test suite for the meeting slot suggestion exercise.
@@ -46,3 +46,32 @@ def test_non_dict_request_raises():
         is_allocation_feasible(resources, requests)
 
 """TODO: Add at least 5 additional test cases to test your implementation."""
+
+# My tests
+def test1():
+    resources = {'cpu': 4, 'gpu': 7}
+    requests = [{'cpu': 2}, {'cpu': 2}, {'gpu': 3}]
+    assert is_allocation_feasible(resources, requests) is True
+
+def test():
+    resources = {'cpu': 6}
+    requests = [{'cpu': 5}, {'mem': 4}]
+    assert is_allocation_feasible(resources, requests) is False
+# ChatGPT's tests
+
+def test_no_requests_is_feasible():
+    resources = {'cpu': 5, 'mem': 10}
+    requests = []
+    assert is_allocation_feasible(resources, requests) is True
+
+def test_request_exceeds_capacity():
+    resources = {'cpu': 6}
+    requests = [{'cpu': 3}, {'cpu': 4}]
+    assert is_allocation_feasible(resources, requests) is False
+
+
+def test_request_with_non_numeric_amount_raises():
+    resources = {'cpu': 10}
+    requests = [{'cpu': 5}, {'cpu': 'ten'}]
+    with pytest.raises(ValueError):
+        is_allocation_feasible(resources, requests)
