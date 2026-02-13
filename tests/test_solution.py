@@ -18,7 +18,8 @@ def test_basic_feasible_single_resource():
     # Reason: check basic functional requirement
     resources = {'cpu': 10}
     requests = [{'cpu': 3}, {'cpu': 4}, {'cpu': 3}]
-    assert is_allocation_feasible(resources, requests) is True
+    # This was set to True for the last lab however for this one it should be false as all resources are consumed
+    assert is_allocation_feasible(resources, requests) is False
 
 def test_multi_resource_infeasible_one_overloaded():
     # Multi-Resource Infeasible (one overload)
@@ -75,3 +76,23 @@ def test_request_with_non_numeric_amount_raises():
     requests = [{'cpu': 5}, {'cpu': 'ten'}]
     with pytest.raises(ValueError):
         is_allocation_feasible(resources, requests)
+
+def test_exact_consumption_single_resource_now_invalid():
+    resources = {"cpu": 4}
+    requests = [{"cpu": 2}, {"cpu": 2}]
+    assert is_allocation_feasible(resources, requests) is False
+
+def test_exact_consumption_multi_resource_now_invalid():
+    resources = {"cpu": 4, "gpu": 2}
+    requests = [{"cpu": 4}, {"gpu": 2}]
+    assert is_allocation_feasible(resources, requests) is False
+
+def test_leaves_leftover_in_unused_resource_valid():
+    resources = {"cpu": 4, "gpu": 2}
+    requests = [{"cpu": 4}]
+    assert is_allocation_feasible(resources, requests) is True
+
+def test_leaves_leftover_by_underusing_capacity_valid():
+    resources = {"cpu": 4}
+    requests = [{"cpu": 3}]
+    assert is_allocation_feasible(resources, requests) is True
